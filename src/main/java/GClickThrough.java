@@ -1,6 +1,7 @@
 import gearth.extensions.Extension;
 import gearth.extensions.ExtensionInfo;
 import gearth.extensions.extra.harble.ChatConsole;
+import gearth.extensions.extra.harble.ChatInputListener;
 import gearth.extensions.extra.harble.HashSupport;
 import gearth.protocol.HMessage;
 
@@ -37,7 +38,7 @@ public class GClickThrough extends Extension {
                         "* Activate this by typing \":start\", you can also stop it using \":stop\". The effect lasts as long as you stay in the room\n";
         final ChatConsole chatConsole = new ChatConsole(hashSupport, this, initmsg);
 
-        hashSupport.intercept(HMessage.Side.TOCLIENT, "GuideSessionPartnerIsPlaying", new MessageListener() {
+        hashSupport.intercept(HMessage.Direction.TOCLIENT, "GuideSessionPartnerIsPlaying", new MessageListener() {
             public void act(HMessage hMessage) {
                 if (isStart && !hMessage.getPacket().readBoolean()) {
                     hMessage.setBlocked(true);
@@ -45,7 +46,7 @@ public class GClickThrough extends Extension {
             }
         });
 
-        chatConsole.onInput(new ChatConsole.ChatInputListener() {
+        chatConsole.onInput(new ChatInputListener() {
             public void inputEntered(String s) {
                 if (s.equals(":start")) {
                     isStart = true;
